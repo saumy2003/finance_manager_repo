@@ -1,56 +1,3 @@
-# # database.py
-
-# import sqlite3
-
-# DB_NAME = 'finance_manager.db'
-
-# def get_connection():
-#     return sqlite3.connect(DB_NAME)
-
-# def initialize_database():
-#     with get_connection() as conn:
-#         cursor = conn.cursor()
-        
-#         # Users table
-#         cursor.execute('''
-#             CREATE TABLE IF NOT EXISTS users (
-#                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-#                 username TEXT UNIQUE NOT NULL,
-#                 password TEXT NOT NULL
-#             )
-#         ''')
-
-#         # Transactions table
-#         cursor.execute('''
-#             CREATE TABLE IF NOT EXISTS transactions (
-#                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-#                 user_id INTEGER,
-#                 type TEXT CHECK(type IN ('income', 'expense')),
-#                 category TEXT,
-#                 amount REAL,
-#                 date TEXT,
-#                 note TEXT,
-#                 FOREIGN KEY(user_id) REFERENCES users(id)
-#             )
-#         ''')
-
-#         # Budgets table
-#         cursor.execute('''
-#             CREATE TABLE IF NOT EXISTS budgets (
-#                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-#                 user_id INTEGER,
-#                 category TEXT,
-#                 amount REAL,
-#                 month INTEGER,
-#                 year INTEGER,
-#                 FOREIGN KEY(user_id) REFERENCES users(id)
-#             )
-#         ''')
-
-#         conn.commit()
-
-
-
 import sqlite3
 
 def get_db_connection():
@@ -71,11 +18,11 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            amount REAL,
-            category TEXT,
-            type TEXT CHECK(type IN ('income', 'expense')),
-            date TEXT,
+            user_id INTEGER NOT NULL,
+            amount REAL NOT NULL,
+            category TEXT NOT NULL,
+            type TEXT CHECK(type IN ('income', 'expense')) NOT NULL,
+            date TEXT NOT NULL,
             description TEXT,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
@@ -84,11 +31,11 @@ def init_db():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS budgets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
-            category TEXT,
-            limit REAL,
-            month INTEGER,
-            year INTEGER,
+            user_id INTEGER NOT NULL,
+            category TEXT NOT NULL,
+            monthly_limit REAL NOT NULL,
+            month INTEGER NOT NULL,
+            year INTEGER NOT NULL,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     ''')

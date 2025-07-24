@@ -1,4 +1,5 @@
 import sqlite3
+import hashlib
 from database import get_db_connection
 
 def register_user():
@@ -32,3 +33,6 @@ def login_user():
     else:
         print("❌ Invalid credentials.")
         return None
+
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
